@@ -1,4 +1,6 @@
-function createBasicAlertModal() {
+import { handleExcelFile } from './EPPexcelHandler.js';
+
+export function createBasicAlertModal() {
     // Create modal elements
     const modal = document.createElement('div');
     const modalContent = document.createElement('div');
@@ -59,7 +61,13 @@ function createBasicAlertModal() {
         const file = event.target.files[0];
         if (file) {
             console.log('File selected:', file.name);
-            // Handle the file as needed
+            handleExcelFile(file);
+            // Trigger download after edits are made
+            const editedFile = new Blob([file], { type: file.type });
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(editedFile);
+            downloadLink.download = file.name;
+            downloadLink.click();
         }
     };
 

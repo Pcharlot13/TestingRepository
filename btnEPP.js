@@ -1,3 +1,5 @@
+import { createBasicAlertModal } from './BasicAlertModal.js';
+
 document.getElementById('EPPfiles').addEventListener('click', function() {
     const basicAlertModal = createBasicAlertModal();
 
