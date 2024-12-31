@@ -3,77 +3,53 @@ function createBasicAlertModal() {
     const modal = document.createElement('div');
     const modalContent = document.createElement('div');
     const modalText = document.createElement('p');
-    const closeButton = document.createElement('span');
-    const doneButton = document.createElement('button');
-    const uploadButton = document.createElement('button');
-    const fileInput = document.createElement('input');
+    // Remove the close button
+    // const closeButton = document.createElement('span'); - done button to close instead
 
-    // Set attributes and styles
+    // Set attributes
     modal.setAttribute('id', 'basicAlertModal');
-    modal.style.display = 'none';
-    modal.style.position = 'fixed';
-    modal.style.zIndex = '1';
-    modal.style.left = '0';
-    modal.style.top = '0';
-    modal.style.width = '100%';
-    modal.style.height = '100%';
-    modal.style.overflow = 'auto';
-    modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
-    modal.style.display = 'flex';
-    modal.style.justifyContent = 'center';
-    modal.style.alignItems = 'center';
+    modal.classList.add('modal');
 
-    modalContent.style.backgroundColor = '#fefefe';
-    modalContent.style.padding = '20px';
-    modalContent.style.border = '1px solid #888';
-    modalContent.style.width = '300px';
-    modalContent.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
-
-    closeButton.innerHTML = '&times;';
-    closeButton.style.color = '#aaa';
-    closeButton.style.float = 'right';
-    closeButton.style.fontSize = '28px';
-    closeButton.style.fontWeight = 'bold';
-    closeButton.style.cursor = 'pointer';
-
-    doneButton.textContent = 'Done';
-    doneButton.style.marginTop = '10px';
-    doneButton.style.padding = '10px 20px';
-    doneButton.style.backgroundColor = '#4CAF50';
-    doneButton.style.color = 'white';
-    doneButton.style.border = 'none';
-    doneButton.style.cursor = 'pointer';
-    doneButton.style.alignSelf = 'center';
-
-    uploadButton.textContent = 'Upload';
-    uploadButton.style.marginTop = '10px';
-    uploadButton.style.padding = '10px 20px';
-    uploadButton.style.backgroundColor = '#008CBA';
-    uploadButton.style.color = 'white';
-    uploadButton.style.border = 'none';
-    uploadButton.style.cursor = 'pointer';
-    uploadButton.style.alignSelf = 'center';
-
-    fileInput.type = 'file';
-    fileInput.style.display = 'none';
+    modalContent.classList.add('modal-content');
+    modalContent.style.display = 'flex';
+    modalContent.style.flexDirection = 'column';
+    modalContent.style.alignItems = 'center';
+    modalContent.style.justifyContent = 'center';
 
     // Append elements
-    modalContent.appendChild(closeButton);
     modalContent.appendChild(modalText);
-    modalContent.appendChild(doneButton);
-    modalContent.appendChild(uploadButton);
-    modalContent.appendChild(fileInput);
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 
-    // Close modal on click
-    closeButton.onclick = function() {
-        modal.style.display = 'none';
-    };
+    // Ensure the upload button and file input are created only once
+    let uploadButton = document.getElementById('uploadButton');
+    let fileInput = document.getElementById('fileInput');
 
-    doneButton.onclick = function() {
-        modal.style.display = 'none';
-    };
+    if (!uploadButton) {
+        uploadButton = document.createElement('button');
+        uploadButton.setAttribute('id', 'uploadButton');
+        uploadButton.textContent = 'Upload';
+        uploadButton.classList.add('upload-button');
+        modalContent.appendChild(uploadButton);
+    }
+
+    // Add Done button
+    let doneButton = document.getElementById('doneButton');
+    if (!doneButton) {
+        doneButton = document.createElement('button');
+        doneButton.setAttribute('id', 'doneButton');
+        doneButton.textContent = 'Done';
+        doneButton.classList.add('done-button');
+        modalContent.appendChild(doneButton);
+    }
+
+    if (!fileInput) {
+        fileInput = document.createElement('input');
+        fileInput.setAttribute('id', 'fileInput');
+        fileInput.type = 'file';
+        fileInput.style.display = 'none';
+        modalContent.appendChild(fileInput);
+    }
 
     uploadButton.onclick = function() {
         fileInput.click();
@@ -87,10 +63,17 @@ function createBasicAlertModal() {
         }
     };
 
+    // Close modal on Done button click
+    doneButton.onclick = function() {
+        modal.style.display = 'none';
+        location.reload();
+    };
+
     // Close modal on outside click
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = 'none';
+            location.reload();
         }
     };
 
